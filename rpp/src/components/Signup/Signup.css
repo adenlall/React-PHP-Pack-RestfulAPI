@@ -1,0 +1,22 @@
+.card{
+    padding: 50px;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+}
+ 
+.cardStyle{
+    width: 500px;
+    border-style:groove;
+    border-color: rgba(0, 0, 0, 0.74);
+}
+ 
+.signupText{
+    font-Weight:600px;
+    text-Align:center;
+    font-Size:20px
+}
+ 
+.CardActions{
+    justify-content: center;
+}
