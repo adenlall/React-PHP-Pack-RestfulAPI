@@ -71,9 +71,9 @@ class Signup extends Component {
         passwordConform: this.state.passwordConform,
       };
 
-      axios.post("http://localhost/React-Pack/php/insert.php", obj)
-        .then((res) => console.log(res.data))
+      axios.post("http://localhost/React-Pack/php/insert.php", obj).then((res) => console.log(res.data))
         .catch((error) => {
+          console.log('error: X');
           console.log(error.response);
         });
 

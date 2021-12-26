@@ -7,24 +7,24 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 require 'connect.php';
 
-// POST DATA
 $data = json_decode(file_get_contents("php://input"));
 
 if (
-    isset($data->user_name)
+    isset($data->id)
+    && isset($data->user_name)
     && isset($data->user_email)
+    && is_numeric($data->id)
     && !empty(trim($data->user_name))
     && !empty(trim($data->user_email))
 ) {
     $username = mysqli_real_escape_string($db_conn, trim($data->user_name));
     $useremail = mysqli_real_escape_string($db_conn, trim($data->user_email));
     if (filter_var($useremail, FILTER_VALIDATE_EMAIL)) {
-        $insertUser = mysqli_query($db_conn, "INSERT INTO `users`(`user_name`,`user_email`) VALUES('$username','$useremail')");
-        if ($insertUser) {
-            $last_id = mysqli_insert_id($db_conn);
-            echo json_encode(["success" => 1, "msg" => "User Inserted.", "id" => $last_id]);
+        $updateUser = mysqli_query($db_conn, "UPDATE `users` SET `user_name`='$username', `user_email`='$useremail' WHERE `id`='$data->id'");
+        if ($updateUser) {
+            echo json_encode(["success" => 1, "msg" => "User Updated."]);
         } else {
-            echo json_encode(["success" => 0, "msg" => "User Not Inserted!"]);
+            echo json_encode(["success" => 0, "msg" => "User Not Updated!"]);
         }
     } else {
         echo json_encode(["success" => 0, "msg" => "Invalid Email Address!"]);
