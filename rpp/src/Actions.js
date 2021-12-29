@@ -7,7 +7,7 @@ export const Actions = () => {
   let [userLength, setUserLength] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost/React-Pack/php/data.php")
+    fetch("http://localhost/php/data.php") // server data file directory
       .then((res) => {
         return res.json();
       })
@@ -26,7 +26,7 @@ export const Actions = () => {
 
   // Inserting a new user into the database.
   const insertUser = (newUser) => {
-    fetch("http://localhost/REACT-PACK/php/insert.php", {
+    fetch("http://localhost/php/insert.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -82,7 +82,7 @@ export const Actions = () => {
 
   // Updating a user.
   const updateUser = (userData) => {
-    fetch("http://localhost/REACT-PACK/php/update.php", {
+    fetch("http://localhost/php/update.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -119,7 +119,7 @@ export const Actions = () => {
     let userDeleted = users.filter((user) => {
       return user.id !== theID;
     });
-    fetch("http://localhost/REACT-PACK/php/delete.php", {
+    fetch("http://localhost/php/delete.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
