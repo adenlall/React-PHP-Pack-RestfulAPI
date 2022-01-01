@@ -1,5 +1,5 @@
 <?php
-header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Origin: "http://localhost:3000/"');//you can changed to '*'.
 header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
 header("Content-Type: text/html; charset=utf-8");
 $method = $_SERVER['REQUEST_METHOD'];
@@ -24,25 +24,24 @@ $method = $_SERVER['REQUEST_METHOD'];
         $resultado = $nueva_consulta->get_result();
         if ($resultado->num_rows == 1) {
             $datos = $resultado->fetch_assoc();
-             $encriptado_db = $datos['clave'];
-            if (password_verify($pas, $encriptado_db))
-            {
+             $PasswordSQL = $datos['clave'];
+
+            if ($pas === $PasswordSQL){
+
                 $_SESSION['usuario'] = $datos['usuario'];
                 echo json_encode(array('conectado'=>true,'usuario'=>$datos['usuario'], 'nombre'=>$datos['nombre'],  'apellidos'=>$datos['apellidos'], 'id'=>$datos['id'], 'idTipoUsuario'=>$datos['idTipoUsuario'], 'etiquetaTipoUsuario'=>$datos['etiquetaTipoUsuario']  ) );
-              }
 
-               else {
-
-                 echo json_encode(array('conectado'=>false, 'error' => 'La clave es incorrecta, vuelva a intentarlo.'));
+              }else {
+                 echo json_encode(array('conectado'=>false, 'error' => 'Wrong password, try again.'));
                     }
         }
         else {
-              echo json_encode(array('conectado'=>false, 'error' => 'El usuario no existe.'));
+              echo json_encode(array('conectado'=>false, 'error' => "User name doesn't existe."));
         }
         $nueva_consulta->close();
       }
       else{
-        echo json_encode(array('conectado'=>false, 'error' => 'No se pudo conectar a BD'));
+        echo json_encode(array('conectado'=>false, 'error' => 'FATAL ERROR => connectin with data base'));
       }
  // }
 $mysqli->close();

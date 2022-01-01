@@ -1,9 +1,9 @@
-import { Provider } from "./Context";
-import Form from "./components/Form";
-import UserList from "./components/UserList";
-import { Actions } from "./Actions";
+import { Provider } from "../Context";
+import Form from "../Form/Form";
+import UserList from "../components/UserList";
+import { Actions } from "../Actions";
 
-function App() {
+function Singuppack() {
   const data = Actions();
   return (
     <Provider value={data}>
@@ -22,4 +22,4 @@ function App() {
   );
 }
 
-export default App;
+export default Singuppack;

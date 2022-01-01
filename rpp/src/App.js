@@ -1,12 +1,14 @@
-import { Provider } from "./Context";
-import Form from "./components/Form";
-import UserList from "./components/UserList";
-import { Actions } from "./Actions";
+import React, { useState } from "react";
 import Loginin from "./components/Login/Login";
-
+import Test from "./components/Test";
 
 function App() {
-  return <Loginin />;
+  const [conn, connUp] = useState(false);
+  const setConn = (est) => {
+    connUp(est);
+  }
+
+  return conn ? <Test /> : <Loginin setConn={setConn} />;
 }
 
 export default App;
