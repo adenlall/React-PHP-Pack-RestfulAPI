@@ -26,7 +26,7 @@ $method = $_SERVER['REQUEST_METHOD'];
             $datos = $resultado->fetch_assoc();
              $PasswordSQL = $datos['clave'];
 
-            if ($pas === $PasswordSQL){
+            if (  password_verify($pas,$PasswordSQL) ){
 
                 $_SESSION['usuario'] = $datos['usuario'];
                 echo json_encode(array('conectado'=>true,'usuario'=>$datos['usuario'], 'nombre'=>$datos['nombre'],  'apellidos'=>$datos['apellidos'], 'id'=>$datos['id'], 'idTipoUsuario'=>$datos['idTipoUsuario'], 'etiquetaTipoUsuario'=>$datos['etiquetaTipoUsuario']  ) );
