@@ -1,109 +1,72 @@
 <?php
-include './connect.php';
-require 'config.php';
-require 'Slim/Slim.php';
+/* son_encode(array('conectado'=>false, 'error' => 'Wrong password, try again.'));
+ */
+    header('Access-Control-Allow-Origin: *'); 
+    header('Content-Type:application/json; charset=UTF-8');
+    header('Access-Control-Allow-Methods: POST'); 
+    header('Access-Control-Allow-Headers:Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods,Authorization,X-Requested-With');
 
-\Slim\Slim::registerAutoloader();
-$app = new \Slim\Slim();
+    include "./code/database.php";
+    include "./code/coder.php";
+    include "./code/config.php";
 
-$app->post('/login','login'); /* User login */
-$app->post('/signup','signup'); /* User Signup */
-$app->post('/feed','feed'); /* User Feeds */
-$app->post('/feedUpdate','feedUpdate'); /* User Feeds */
-$app->post('/feedDelete','feedDelete'); /* User Feeds */
-//$app->post('/userDetails','userDetails'); /* User Details */
+  
 
-$app->run();
+    $code=new Coder();
 
-/************************* USER LOGIN *************************************/
-/* ### User login ### */
-function login() {
-    $request = \Slim\Slim::getInstance()->request();
-    $data = json_decode($request->getBody());
-    try {
-       $db = getDB();
-       $userData ='';
-       $sql = "SELECT user_id, name, email, username FROM userdetails WHERE (username=:username or email=:username) and password=:password ";
-      $stmt = $db->prepare($sql);
-      $stmt->bindParam("username", $data->username, PDO::PARAM_STR);
-      $password=hash('sha256',$data->password);
-      $stmt->bindParam("password", $password, PDO::PARAM_STR);
-      $stmt->execute();
-      $mainCount=$stmt->rowCount();
-      $userData = $stmt->fetch(PDO::FETCH_OBJ);
-if(!empty($userData))
-{
-     $user_id=$userData->user_id;
-     $userData->token = apiToken($user_id);
-}
-    $db = null;
-if($userData){
-   $userData = json_encode($userData);
-   echo '{"userData": ' .$userData . '}';
-} else {
-   echo '{"error":{"text":"Bad request wrong username and password"}}';
-}
-
-}
-catch(PDOException $e) {
-echo '{"error":{"text":'. $e->getMessage() .'}}';
-}
-}
+    $data=json_decode(file_get_contents("php://input"));
 
 
-/* ### User registration ### */
-function signup() {
-   $request = \Slim\Slim::getInstance()->request();   
-   $data = json_decode($request->getBody());
-   $email=$data->email;
-   $name=$data->name;
-   $username=$data->username;
-   $password=$data->password;
-   try {
-       $username_check = preg_match('~^[A-Za-z0-9_]{3,20}$~i', $username);
-       $email_check = preg_match('~^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.([a-zA-Z]{2,4})$~i', $email);
-      $password_check = preg_match('~^[A-Za-z0-9!@#$%^&*()_]{6,20}$~i', $password);
-     
-    if (strlen(trim($username))>0 && strlen(trim($password))>0 && strlen(trim($email))>0 && $email_check>0 && $username_check>0 && $password_check>0)
-   {
-    $db = getDB();
-    $userData = '';
-    $sql = "SELECT user_id FROM users WHERE username=:username or email=:email";
-    $stmt = $db->prepare($sql);
-    $stmt->bindParam("username", $username,PDO::PARAM_STR);
-    $stmt->bindParam("email", $email,PDO::PARAM_STR);
-    $stmt->execute();
-   $mainCount=$stmt->rowCount();
-   $created=time();
-   if($mainCount==0)
-  {
-    /*Inserting user values*/
-     $sql1="INSERT INTO users(username,password,email,name)VALUES(:username,:password,:email,:name)";
-      $stmt1 = $db->prepare($sql1);
-      $stmt1->bindParam("username", $username,PDO::PARAM_STR);
-      $password=hash('sha256',$data->password);
-      $stmt1->bindParam("password", $password,PDO::PARAM_STR);
-      $stmt1->bindParam("email", $email,PDO::PARAM_STR);
-      $stmt1->bindParam("name", $name,PDO::PARAM_STR);
-      $stmt1->execute();
-      $userData=internalUserDetails($email);
-      }
-      $db = null;
+    if($_SERVER["REQUEST_METHOD"]!="POST"):
+        echo json_encode(array('conectado'=>false, "error" => "Page Not Found !"));
+        elseif(
+            !isset($data->usuario) 
+            || !isset($data->clave)
+            || empty(trim($data->usuario))
+            || empty($data->clave)
+        ):
+        echo json_encode(array('conectado'=>false, 'error' => 'Please compleate all feild, and try again.'));
+        else:
+            $email=trim($data->usuario);
+            $password=trim($data->clave);
 
-if($userData){
-      $userData = json_encode($userData);
-      echo '{"userData": ' .$userData . '}';
-} else {
-      echo '{"error":{"text":"Enter valid data"}}';
-}
+            if(!filter_var($email,FILTER_VALIDATE_EMAIL)):
+                echo json_encode(array('conectado'=>false, 'error' => 'Wrong email.'));
+            elseif(strlen($password) < 8):
+                echo json_encode(array('conectado'=>false, 'error' => "The Password Must Be At Least 8 Characters !"));
+        
+            else:
+                try{
+                    $stmt=$user->Login($email);
 
-}
-else{
-      echo '{"error":{"text":"Enter valid data"}}';
-}
-}
-catch(PDOException $e) {
-      echo '{"error":{"text":'. $e->getMessage() .'}}';
-}
-}
+                    if($stmt->rowCount()):
+                        $row=$stmt->fetch(PDO::FETCH_ASSOC);
+/*                         $checkPass=password_verify($password,$row['Password']); */        
+                        if($password===$row['Password']):
+
+                            $val=$code->coding($row['ID'],'encrypt');
+
+                            echo json_encode(array(
+                                
+                                    "conectado" => true,
+                                    "error" => "You Have Logined Successfully .",
+                                    "user"=>$val
+                            ));
+                            
+                        else:
+                            echo json_encode(array('conectado'=>false, 'error' => 'Wrong password, try again.'));
+                        endif;
+
+                        
+                    else:
+                        echo json_encode(array('conectado'=>false, 'error' => "Invalid Email Or Password !"));
+                    endif;
+
+                }catch(PDOException $e){
+                    echo json_encode(array('conectado' => false,"error" => $e->getMessage()));
+                }   
+        endif;
+    endif;
+
+
 ?>

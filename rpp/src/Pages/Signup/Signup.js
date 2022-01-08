@@ -1,15 +1,13 @@
-import { Component } from 'react';
-import './Signup.css';
-import React from 'react';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
-import TextBox from '../../core/textField/textField';
+import { Component } from "react";
+import "./Signup.css";
+import React from "react";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import Button from "@material-ui/core/Button";
+import TextBox from "./Components/textField";
 import axios from "axios";
 
- 
- 
 class Signup extends Component {
   constructor(props) {
     super(props);
@@ -71,9 +69,11 @@ class Signup extends Component {
         passwordConform: this.state.passwordConform,
       };
 
-      axios.post("http://localhost/React-Pack/php/insert.php", obj).then((res) => console.log(res.data))
+      axios
+        .post("http://localhost/React-Pack/php/insert.php", obj)
+        .then((res) => console.log(res.data))
         .catch((error) => {
-          console.log('error: X');
+          console.log("error: X");
           console.log(error.response);
         });
 
@@ -85,17 +85,14 @@ class Signup extends Component {
         password: "",
         passwordConform: "",
       }); */
-      
     } else {
       alert("Password mismatch");
     }
   }
 
-
-
   render() {
     return (
-      <div className="card">
+      <div className="card bg-dark">
         <Card className="cardStyle">
           <CardContent>
             <div className="signupText">SIGNUP</div>
@@ -145,6 +142,5 @@ class Signup extends Component {
     );
   }
 }
- 
- 
-export default Signup ;
+
+export default Signup;
