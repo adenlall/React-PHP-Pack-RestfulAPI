@@ -1,10 +1,2 @@
 
-
-#Structer => {
-
-    POST - http://localhost/REACT-PACK/php/insert.php
-    GET  - http://localhost/REACT-PACK/php/data.php
-    POST - http://localhost/REACT-PACK/php/update.php
-    POST - http://localhost/REACT-PACK/php/delete.php
-
-}
+RESTFUL PHP API using JWT to contact with frontend
