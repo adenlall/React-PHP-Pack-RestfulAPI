@@ -1,11 +1,17 @@
 import axios from "axios";
-const SERVER_URL = "http://localhost/React-Pack/jwt-authentication-php";
+const SERVER_URL = "http://localhost/React-Pack/php/jwt-authentication-php";
 
 const login = async (data) => {
   const LOGIN_ENDPOINT = `${SERVER_URL}/api/login.php`;
 
   try {
-    let response = await axios.post(LOGIN_ENDPOINT, data);
+    const response = await fetch(LOGIN_ENDPOINT, {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
     if (
       response.status === 200 &&
@@ -22,20 +28,17 @@ const login = async (data) => {
     console.log(e);
   }
 };
-
-/*  const SIGNUP_ENDPOINT = `${SERVER_URL}/api/register.php`;
- axios
-   .post(SIGNUP_ENDPOINT, data)
-   .then((res) => console.log(res.data))
-   .catch((error) => {
-     console.log("error: X");
-     console.log(error.response);
-   }); */
 const register = async (data) => {
   const SIGNUP_ENDPOINT = `${SERVER_URL}/api/register.php`;
+  const response = await fetch(SIGNUP_ENDPOINT, {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 
-  const rep = await fetch(SIGNUP_ENDPOINT, data);
-  const json = await rep.json();
+  const json = await response.json();
   console.log(json);
 };
 
