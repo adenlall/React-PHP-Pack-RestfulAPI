@@ -20,19 +20,24 @@ const getData = async (url, data) => {
 };
 
 function Name(props) {
+  const refName = useRef(null);
   const refEmail = useRef(null);
   const refPass = useRef(null);
+  const refBirthday = useRef(null);
 
   const handelLoin = async () => {
     const data = {
-      usuario: refEmail.current.value,
-      clave: refPass.current.value,
+      name: refName.current.value,
+      email: refEmail.current.value,
+      password: refPass.current.value,
+      birthday: refBirthday.current.value,
     };
     console.log(data);
     const data_JSON = await getData(URL_LOGIN, data);
-    console.log("Mmm.... ", data_JSON.conectado);
-    props.setConn(data_JSON.conectado);
-    document.querySelector(".htx").innerHTML = data_JSON.error;
+    console.log(data_JSON);
+    console.log("Mmm.... ", data_JSON.status);
+    props.setConn(data_JSON.success);
+    document.querySelector(".htx").innerHTML = data_JSON.status;
   };
 
   return (
@@ -42,7 +47,22 @@ function Name(props) {
     >
       <form className="form" style={{ textAlign: "initial" }}>
         <label className="sr-only" htmlFor="inlineFormInputGroupUsername2">
-          Username
+          Name
+        </label>
+        <div className="input-group mb-2 mr-sm-2">
+          <div className="input-group-prepend">
+            <div className="input-group-text">📧</div>
+          </div>
+          <input
+            type="text"
+            className="form-control"
+            id="inlineFormInputGroupUsername1"
+            placeholder="name"
+            ref={refName}
+          />
+        </div>{" "}
+        <label className="sr-only" htmlFor="inlineFormInputGroupUsername2">
+          Email
         </label>
         <div className="input-group mb-2 mr-sm-2">
           <div className="input-group-prepend">
@@ -52,7 +72,7 @@ function Name(props) {
             type="email"
             className="form-control"
             id="inlineFormInputGroupUsername2"
-            placeholder="Username"
+            placeholder="email"
             ref={refEmail}
           />
         </div>{" "}
@@ -66,9 +86,24 @@ function Name(props) {
           <input
             type="password"
             className="form-control"
-            id="inlineFormInputGroupUsername2"
-            placeholder="Password"
+            id="inlineFormInputGroupUsername3"
+            placeholder="password"
             ref={refPass}
+          />
+        </div>
+        <label className="sr-only" htmlFor="inlineFormInputGroupPassword2">
+          Birhday
+        </label>
+        <div className="input-group mb-2 mr-sm-2">
+          <div className="input-group-prepend">
+            <div className="input-group-text">🔒</div>
+          </div>
+          <input
+            type="text"
+            className="form-control"
+            id="inlineFormInputGroupUsername4"
+            placeholder="birhday"
+            ref={refBirthday}
           />
         </div>
         <div className="alert alert-danger">

@@ -21,16 +21,19 @@ const getData = async (url, data) => {
 
 function City(props) {
   const refCity = useRef(null);
+  const refCountry = useRef(null);
 
   const handelLoin = async () => {
     const data = {
+      country: refCountry.current.value,
       city: refCity.current.value,
     };
     console.log(data);
     const data_JSON = await getData(URL_LOGIN, data);
-    console.log("Mmm.... ", data_JSON.conectado);
-    props.setCity(data_JSON.conectado);
-    document.querySelector(".htx").innerHTML = data_JSON.error;
+    console.log(data_JSON);
+    console.log("Mmm.... ", data_JSON.status);
+    props.setCity(data_JSON.success);
+    document.querySelector(".htx").innerHTML = data_JSON.status;
   };
 
   return (
@@ -39,6 +42,21 @@ function City(props) {
       style={{ userSelect: "auto" }}
     >
       <form className="form" style={{ textAlign: "initial" }}>
+        <label className="sr-only" htmlFor="inlineFormInputGroupUsername2">
+          Country
+        </label>
+        <div className="input-group mb-2 mr-sm-2">
+          <div className="input-group-prepend">
+            <div className="input-group-text">🌍</div>
+          </div>
+          <input
+            type="text"
+            className="form-control"
+            id="inlineFormInputGroupUsername2"
+            placeholder="Country"
+            ref={refCity}
+          />
+        </div>{" "}
         <label className="sr-only" htmlFor="inlineFormInputGroupUsername2">
           City
         </label>
@@ -50,12 +68,12 @@ function City(props) {
             type="text"
             className="form-control"
             id="inlineFormInputGroupUsername2"
-            placeholder="Country / City"
-            ref={refCity}
+            placeholder="City"
+            ref={refCountry}
           />
         </div>
         <div className="alert alert-danger">
-          <span className="htx"> Insert your data </span>
+          <span className="htx"> Insert your Country and City Names </span>
         </div>
         <Inputs event={handelLoin} href="/signup/clubs" butt="Let's Start" />
       </form>

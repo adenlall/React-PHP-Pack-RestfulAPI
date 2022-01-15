@@ -28,9 +28,10 @@ function News(props) {
     };
     console.log(data);
     const data_JSON = await getData(URL_LOGIN, data);
-    console.log("Mmm.... ", data_JSON.conectado);
-    props.setNews(data_JSON.conectado);
-    document.querySelector(".htx").innerHTML = data_JSON.error;
+    console.log(data_JSON);
+    console.log("Mmm.... ", data_JSON.status);
+    props.setNews(data_JSON.success);
+    document.querySelector(".htx").innerHTML = data_JSON.status;
   };
 
   return (
@@ -55,7 +56,7 @@ function News(props) {
           />
         </div>
         <div className="alert alert-danger">
-          <span className="htx"> Insert your data </span>
+          <span className="htx"> Insert your Intrested Topics </span>
         </div>
         <Inputs
           event={handelLoin}

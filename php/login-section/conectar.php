@@ -9,18 +9,18 @@ function conectarDB(){
   $servidor = "localhost";
   $usuario = "root";
   $password = "root";
-  $bd = "prueba_login";
-  //$bd = "cajaherr_datos";
-  
+    $bd = "usertest";
 
-    $conexion = mysqli_connect($servidor, $usuario, $password,$bd);
 
-        if($conexion){
+
+    $db_conn = mysqli_connect($servidor, $usuario, $password, $bd);
+
+    if ($db_conn) {
             echo "";
         }else{
-            echo 'Some error';
-        }
+        echo json_encode(["success" => false, "status" => "failed to connect with data-base!"]);
+    }
 
-    return $conexion;
+    return $db_conn;
 }
 ?>

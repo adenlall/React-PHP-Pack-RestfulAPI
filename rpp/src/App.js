@@ -40,16 +40,16 @@ function App() {
             <Route
               path="/signup/city"
               element={
-                conn ? <Name setConn={setConn} /> : <City setCity={setCity} />
+                conn ? <City setCity={setCity} /> : <Name setConn={setConn} />
               }
             />
             <Route
               path="/signup/clubs"
               element={
                 city ? (
-                  <City setCity={setCity} />
-                ) : (
                   <Clubs setClubs={setClubs} />
+                ) : (
+                  <City setCity={setCity} />
                 )
               }
             />
@@ -57,16 +57,16 @@ function App() {
               path="/signup/news"
               element={
                 clubs ? (
-                  <Clubs setClubs={setClubs} />
-                ) : (
                   <News setNews={setNews} />
+                ) : (
+                  <Clubs setClubs={setClubs} />
                 )
               }
             />
             <Route
               path="/dashboard"
               element={
-                news ? <News setNews={setNews} /> : <Name setConn={setConn} />
+                news ? <Name setConn={setConn} /> : <News setNews={setNews} />
               }
             />{" "}
           </Routes>
