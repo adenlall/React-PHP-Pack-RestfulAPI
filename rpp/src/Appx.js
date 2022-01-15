@@ -11,14 +11,14 @@ class Appx extends Component {
     await login(info);
   }
   async register() {
-    let info = {
+    let data = {
       first_name: "Bilal",
       last_name: "Janah",
       email: "aden@lall.com",
       password: "OX00.comOXOX..x",
     };
 
-    await register(info);
+    await register(data);
   }
   render() {
     return (
