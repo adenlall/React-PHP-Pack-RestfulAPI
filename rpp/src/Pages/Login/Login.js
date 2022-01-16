@@ -1,18 +1,17 @@
 import React, { useRef } from "react";
 import { NavLink } from "react-router-dom";
 
-const URL_LOGIN = "http://localhost/React-Pack/php/login.php";
+const URL_LOGIN =
+  "http://localhost/React-Pack/php/jwt-authentication-php/api/login.php";
 
-const getData = async (url, data) => {
-  const rep = await fetch(url, {
+const getData = async (URL_LOGIN, data) => {
+  const rep = await fetch(URL_LOGIN, {
     method: "POST",
     body: JSON.stringify(data),
     headers: {
       "Content-Type": "application/json",
     },
   });
-
-  //console.log(rep);
   const json = await rep.json();
   //console.log(json);
 
@@ -25,14 +24,15 @@ function Loginin(props) {
 
   const handelLoin = async () => {
     const data = {
-      usuario: refEmail.current.value,
-      clave: refPass.current.value,
+      email: refEmail.current.value,
+      pass: refPass.current.value,
     };
     console.log(data);
     const data_JSON = await getData(URL_LOGIN, data);
-    console.log("Mmm.... ", data_JSON.conectado);
-    props.setConn(data_JSON.conectado);
-    document.querySelector(".htx").innerHTML = data_JSON.error;
+    console.log(data_JSON);
+    document.querySelector(".htx").innerHTML = data_JSON.message;
+    /*     props.setConn(false);
+     */
   };
 
   return (
@@ -75,7 +75,7 @@ function Loginin(props) {
           <span className="htx"> Insert your data </span>
         </div>
       </form>
-      <NavLink className="nav-link" to="/home">
+      <NavLink className="nav-link" to="/dashboard">
         <button
           onClick={handelLoin}
           className="btn btn-lg btn-info btn-block mb-2"

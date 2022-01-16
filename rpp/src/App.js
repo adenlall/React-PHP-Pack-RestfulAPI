@@ -5,27 +5,18 @@ import Home from "./Pages/Home/Home";
 import Navbar from "./Pages/Navbar/Navbar";
 import Footer from "./Pages/Footer/Footer";
 
-import Name from "./Pages/Home/Name";
-import City from "./Pages/Home/City";
-import Clubs from "./Pages/Home/Clubs";
-import News from "./Pages/Home/News";
+import Signup from "./Pages/Signup/Signup";
+import Login from "./Pages/Login/Login";
 
 function App() {
   const [conn, connUp] = useState(false);
-  const [city, cityUp] = useState(false);
-  const [clubs, clubsUp] = useState(false);
-  const [news, newsUp] = useState(false);
+  const [log, logUp] = useState(false);
+
   const setConn = (est) => {
     connUp(est);
   };
-  const setCity = (est) => {
-    cityUp(est);
-  };
-  const setClubs = (est) => {
-    clubsUp(est);
-  };
-  const setNews = (est) => {
-    newsUp(est);
+  const setLog = (est) => {
+    logUp(est);
   };
 
   return (
@@ -36,39 +27,18 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/home" element={<Home />} />
-            <Route path="/signup/name" element={<Name setConn={setConn} />} />
+            <Route path="/signup" element={<Signup setConn={setConn} />} />
+            <Route path="/login" element={<Login setLog={setLog} />} />
             <Route
-              path="/signup/city"
+              path="/login/from=signup"
               element={
-                conn ? <City setCity={setCity} /> : <Name setConn={setConn} />
-              }
-            />
-            <Route
-              path="/signup/clubs"
-              element={
-                city ? (
-                  <Clubs setClubs={setClubs} />
-                ) : (
-                  <City setCity={setCity} />
-                )
-              }
-            />
-            <Route
-              path="/signup/news"
-              element={
-                clubs ? (
-                  <News setNews={setNews} />
-                ) : (
-                  <Clubs setClubs={setClubs} />
-                )
+                conn ? <Login setLog={setLog} /> : <Signup setConn={setConn} />
               }
             />
             <Route
               path="/dashboard"
-              element={
-                news ? <Name setConn={setConn} /> : <News setNews={setNews} />
-              }
-            />{" "}
+              element={log ? <Home /> : <Login setLog={setLog} />}
+            />
           </Routes>
           <Footer />
         </div>

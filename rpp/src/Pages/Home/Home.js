@@ -16,7 +16,7 @@ class Home extends Component {
             pages. Download, edit the text, and add your own fullscreen
             background photo to make it your own."
         />
-        <Inputs href="/signup/name" butt="Let's Start" />
+        <Inputs href="/signup" butt="Let's Start" />
       </main>
     );
   }
